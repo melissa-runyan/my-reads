@@ -1,8 +1,13 @@
 # MyReads Project
 
-This part of the final assessment project for Udacity's React Fundamentals course. 
+This project is an application builtggi in React to books from one shelf into another. Books can
+be added into three bookshelves currently reading, want to read, and read.  
 
-## TL;DR
+Books can be moved from one shelf to another from the main page, or by adding a book through searching.  
+When the add button is clicked the search page will be displayed.  On the search page a book can be 
+searched for and added into one of the three bookshelves.
+
+## Deployment Instructions
 
 To run this project:
 
@@ -15,7 +20,7 @@ To run this project:
 ├── SEARCH_TERMS.md # The whitelisted short collection of available search terms.
 ├── package.json # npm package manager file.
 ├── public
-│   ├── favicon.ico # React Icon, You may change if you wish.
+│   ├── mel.ico # Application Icon
 │   └── index.html 
 └── src
     ├── App.css # Styles for the app.
