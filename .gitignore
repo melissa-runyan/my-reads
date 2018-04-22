@@ -1,4 +1,5 @@
 node_modules
+packaage-lock.json
 yarn.lock
 .DS_Store
 .vscode

@@ -3,55 +3,28 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import * as BooksAPI from './BooksAPI'
+import Bookview from './Bookview'
 
 class SearchPage extends Component {
 
     state = {
         bookResults: [],
         query: '',
-        activeBookId: null,
-        activeClass: false,
-        bookShelf: null
+        bookshelf:  "none"
     }
 
-    componentDidMount() {
-        document.addEventListener('click', this.handleOutsideClick, false);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('click', this.handleOutsideClick, false);
-    }
-
-    handleOutsideClick = (e) => {
-        // ignore clicks on the component itself
-        if (this.node.contains(e.target)) {
-            this.state.activeClass ? this.setState({ activeClass: false }) : this.setState({ activeClass: true })
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
-    }
-
-    onToggleMenu = (book) => (event) => {
-        this.setState({ activeBookId: event.currentTarget.dataset.id });
-        this.state.activeClass ? this.setState({ activeClass: false }) : this.setState({ activeClass: true })
-
-        // attach/remove event handler
-        if (!this.state.activeClass) {
-            document.addEventListener('click', this.handleOutsideClick, false);
-        } else {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
-
-        let bookShelf = "";
+    toggleMenu = (id) => {
+        let bookShelf = "none"
         let currentlyReading = this.props.currentlyReading.filter((b) => {
-            return (b.id === book.id)
+            return (b.id === id)
         })
 
         let wantToRead = this.props.wantToRead.filter((b) => {
-            return (b.id === book.id)
+            return (b.id === id)
         })
 
         let read = this.props.read.filter((b) => {
-            return (b.id === book.id)
+            return (b.id === id)
         })
 
         if (currentlyReading.length > 0) {
@@ -66,22 +39,18 @@ class SearchPage extends Component {
             bookShelf = "read"
         }
 
-        this.setState({ bookShelf: bookShelf })
+        this.setState({ bookshelf: bookShelf })
     }
 
     updateQuery = (query) => {
         this.setState(() => ({
             query: query,
             bookResults: [],
-            activeBookId: null,
-            activeClass: false,
-            bookShelf: null
+            bookShelf: "none"
         }))
 
         if (query !== '') {
             BooksAPI.search(query).then((booklist) => {
-                console.log(booklist)
-                console.log(query)
                 if (booklist !== null && booklist.error === undefined) {
                     let bookResults = booklist.filter((b) => {
                         return ((b.imageLinks !== undefined))
@@ -104,16 +73,9 @@ class SearchPage extends Component {
         this.updateQuery('')
     }
 
-    handleChange = (book) => (e) => {
-        e.preventDefault()
-
-        if (this.props.moveToBookshelf) {
-            this.props.moveToBookshelf(book, e.currentTarget.dataset.id);
-        }
-    }
-
     render() {
-        const { bookResults, query } = this.state
+        const { bookshelf, bookResults, query } = this.state
+        const { moveToBookshelf } = this.props
 
         return (
             <div className="search-books" ref={node => { this.node = node; }}>
@@ -141,63 +103,7 @@ class SearchPage extends Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <ol className='books-grid'>
-                        {bookResults.map((book) => (
-                            <li key={book.id}>
-                                <div className="book">
-                                    <div className="book-top">
-                                        <div
-                                            className='book-cover'
-                                            style={{
-                                                width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})`
-                                            }}
-                                        ></div>
-                                        <div className="book-shelf-changer" data-id={book.id} onClick={this.onToggleMenu(book)}>
-                                            <div className={((this.state.activeBookId === book.id) &&
-                                                this.state.activeClass) ? "add-menu-active" : "add-menu"}>
-                                                <div className="book-shelf-changer-option disabled-option">
-                                                    Move to...
-                                            </div>
-                                                <div className={((this.state.activeBookId === book.id)
-                                                    && this.state.bookShelf === "currentlyReading"
-                                                ) ? "book-shelf-changer-option disabled-option" : "book-shelf-changer-option"} data-id="currentlyReading" onClick={this.handleChange(book)}>
-                                                    <div className="shelf-name">Currently Reading</div>
-                                                    <span id="currentlyReading" className={((this.state.activeBookId === book.id)
-                                                        && this.state.bookShelf === "currentlyReading"
-                                                    ) ? "in-shelf" : null}
-                                                    />
-                                                </div>
-                                                <div className={((this.state.activeBookId === book.id)
-                                                    && this.state.bookShelf === "wantToRead"
-                                                ) ? "book-shelf-changer-option disabled-option" : "book-shelf-changer-option"} data-id="wantToRead" onClick={this.handleChange(book)}>
-                                                    <div className="shelf-name">Want To Read</div>
-                                                    <span id="wantToRead" className={((this.state.activeBookId === book.id)
-                                                        && this.state.bookShelf === "wantToRead"
-                                                    ) ? "in-shelf" : null}
-                                                    />
-                                                </div>
-                                                <div className={((this.state.activeBookId === book.id)
-                                                    && this.state.bookShelf === "read"
-                                                ) ? "book-shelf-changer-option disabled-option" : "book-shelf-changer-option"} data-id="read" onClick={this.handleChange(book)}>
-                                                    <div className="shelf-name">Read</div>
-                                                    <span id="read" className={((this.state.activeBookId === book.id)
-                                                        && this.state.bookShelf === "read"
-                                                    ) ? "in-shelf" : null}
-                                                    />
-                                                </div>
-                                                <div className={((this.state.activeBookId === book.id)
-                                                    && this.state.bookShelf === "none"
-                                                ) ? "book-shelf-changer-option disabled-option" : "book-shelf-changer-option"} data-id="none" onClick={this.handleChange(book)}>
-                                                    <div className="shelf-name">None</div>
-                                                    <span id="none" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ol>
+                    <Bookview booklist={bookResults} bookshelf={bookshelf} node={this.node} moveToBookshelf={moveToBookshelf} onToggleMenu={this.toggleMenu} />
                 </div>
             </div>
         )

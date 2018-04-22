@@ -40,8 +40,6 @@ class App extends Component {
   }
 
   moveToBookshelf = (book, shelf) => {
-    console.log(book);
-    console.log(shelf);
     BooksAPI.update(book, shelf);
     this.fetchBookshelves();
   }

@@ -42,7 +42,8 @@ body, .app {
 .bookshelf-title {
   border-bottom: 1px solid #dedede;
 }
-.bookshelf-books {
+
+.booklist-view {
   text-align: center;
 }
 
@@ -143,7 +144,7 @@ body, .app {
   align-items: flex-end;
 }
 
-.book-shelf-changer {
+.drop-down-menu {
   position: absolute;
   right: 0;
   bottom: -10px;
@@ -158,18 +159,12 @@ body, .app {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-.book-shelf-changer select {
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
+.drop-down-menu .add-menu {
+  visibility: hidden;
 }
 
-.book-shelf-changer .add-menu {
-  display: none;
-}
-
-.book-shelf-changer .add-menu-active {
+.drop-down-menu .add-menu-active {
+  visibility: visible;
   width: 150px;
   display: block;
   cursor: pointer;
@@ -180,35 +175,40 @@ body, .app {
   border: 1px solid #147486;
   z-index: 1;
   position: absolute;
-  position: absolute;
-  top: 40px;
   right: -10px;
+  top: 100%;
+  bottom: auto;
 }
 
-.book-shelf-changer .disabled-option {
+.drop-down-menu .add-menu-active.dropUp {
+  top: auto;
+  bottom: 100%;
+}
+
+.drop-down-menu .disabled-option {
   color: #147486;
   cursor: default;
 }
 
-.book-shelf-changer .disabled-option:hover {
+.drop-down-menu .disabled-option:hover {
   background: transparent
 }
 
-.book-shelf-changer-option {
+.drop-down-menu-option {
   display: flex;
   flex-direction: row;
   padding: 1em;
 }
 
-.book-shelf-changer-option:hover {
+.drop-down-menu-option:hover {
   background: #63c5e0;
 }
 
-.book-shelf-changer-option .shelf-name {
+.drop-down-menu-option .item-name {
   flex: 1;
 }
 
-.book-shelf-changer .disabled-option .in-shelf {
+.drop-down-menu .disabled-option .current-item {
   align-self: flex-end;
   width: 18px;
   height: 18px;

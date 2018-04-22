@@ -6,40 +6,6 @@ import Bookshelf from './Bookshelf'
 import './App.css'
 
 class MainApp extends Component {
-
-  state = {
-    activeBookId: null,
-    activeClass: false,
-  }
-
-  componentDidMount() {
-    document.addEventListener('click', this.handleOutsideClick, false);
-  }
-
-  componentWillUnmount() {
-      document.removeEventListener('click', this.handleOutsideClick, false);
-  }
-
-  handleOutsideClick = (e) => {
-    // ignore clicks on the component itself
-    if (this.node.contains(e.target)) {
-        this.state.activeClass ? this.setState({ activeClass: false }) : this.setState({ activeClass: true })
-        document.removeEventListener('click', this.handleOutsideClick, false);
-    }
-  }
-
-  onToggleMenu = (book, id) => {
-    this.setState({ activeBookId: id });
-    this.state.activeClass ? this.setState({ activeClass: false }) : this.setState({ activeClass: true })
-
-    // attach/remove event handler
-    if (!this.state.activeClass) {
-        document.addEventListener('click', this.handleOutsideClick, false);
-    } else {
-        document.removeEventListener('click', this.handleOutsideClick, false);
-    }
-  }
-
   moveToBookshelf = (book, shelf) => {
     if(this.props.moveToBookshelf) {
       this.props.moveToBookshelf(book, shelf);
@@ -48,7 +14,6 @@ class MainApp extends Component {
 
   render() {
     const { currentlyReading, wantToRead, read } = this.props
-    const { activeBookId, activeClass } = this.state
 
     return (
       
@@ -61,23 +26,17 @@ class MainApp extends Component {
             <Bookshelf bookshelfTitle='Currently Reading' 
               bookshelf={currentlyReading}  
               moveToBookshelf={this.moveToBookshelf}
-              onToggleMenu={this.onToggleMenu}
-              activeBookId={activeBookId}
-              activeClass={activeClass}
+              node={this.node}
               />
             <Bookshelf bookshelfTitle='Want to Read' 
               bookshelf={wantToRead} 
               moveToBookshelf={this.moveToBookshelf}
-              onToggleMenu={this.onToggleMenu}
-              activeBookId={activeBookId}
-              activeClass={activeClass}
+              node={this.node}
               />
             <Bookshelf bookshelfTitle='Read' 
               bookshelf={read} 
               moveToBookshelf={this.moveToBookshelf}
-              onToggleMenu={this.onToggleMenu}
-              activeBookId={activeBookId}
-              activeClass={activeClass}
+              node={this.node}
               />
           </div>
         </div>
