@@ -1,6 +1,6 @@
 # MyReads Project
 
-This project is an application builtggi in React to books from one shelf into another. Books can
+This project is an application built in React to move books from one shelf into another. Books can
 be added into three bookshelves currently reading, want to read, and read.  
 
 Books can be moved from one shelf to another from the main page, or by adding a book through searching.  
@@ -28,6 +28,8 @@ To run this project:
     ├── App.test.js # Used for testing.
     ├── BooksAPI.js # A JavaScript API for the provided Udacity backend. Instructions for the methods are below.
     ├── Bookshelf.js # This the bookshelf component that handles rendering the three bookselves.
+    ├── BookshelfChanger.js # Creates the bookshelf dropdown using the UI Dropdown Components   
+    ├── Bookview # the bookview to display the books and bookshelf changer
     ├── icons # Images for the application
     │   ├── add.svg
     │   ├── arrow-back.svg
@@ -37,6 +39,9 @@ To run this project:
     └── index.js # Used for rendering the DOM.
     └── MainApp.js # Main page of the application where the bookshelves are displayed with link to the search page.   
     └── SearchPage.js # This is the search page used to add a book to a shelf.    
+    ├── ui # Ui Components for Dropdown Menu
+    │   ├── DropdownMenu.js
+    │   ├── DropdownMenuItem.js 
 ```
 
 ## Backend Server
